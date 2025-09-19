@@ -1,0 +1,313 @@
+<!doctype html>
+
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portofolio — I Gede Rahadi</title>
+  <meta name="description" content="Portofolio online I Gede Rahadi — pengembang, pembuat bot WhatsApp, dan penggemar teknologi." />  <!-- Google Fonts -->  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <!-- Devicon Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">  <style>
+    /* Hacker Matrix Effect */
+#hackerCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* supaya di belakang konten */
+  background: #000;
+}
+    :root{
+      --bg:#0b1120; --card:#111827; --muted:#9ca3af; --accent:#06b6d4; --accent2:#7c3aed;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Inter',sans-serif;
+    color:#ffffff;
+    line-height:1.6
+    }
+    a{text-decoration:none;color:var(--accent)}
+    
+    .toggle-audio {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  background: rgba(255,255,255,0.2);
+  border: none;
+  padding: 12px;
+  border-radius: 50%;
+  font-size: 20px;
+  color: #fff;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  z-index: 11;
+}
+
+.music-player {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255,255,255,0.2); /* putih tembus pandang */
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+  display: none; /* default sembunyi */
+  align-items: center;
+  gap: 12px;
+  z-index: 10;
+}
+
+.music-player button {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+}   
+    
+    .container{max-width:1100px;margin:auto;padding:24px}
+    header{display:flex;align-items:center;justify-content:space-between;padding:16px 0}
+    .logo{font-size:24px;font-weight:800;color:#fff;letter-spacing:1px}
+    nav a{margin-left:20px;color:var(--muted);font-weight:600;transition:.3s}
+    nav a:hover{color:var(--accent)}
+
+    .hero{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:40px;padding:60px 0}
+    .hero img{width:220px;height:220px;border-radius:50%;object-fit:cover;box-shadow:0 0 20px rgba(6,182,212,0.5)}
+    .hero h1{font-size:38px;margin-bottom:12px}
+    .hero p{color:var(--muted);margin-bottom:20px}
+    .btn{display:inline-block;padding:12px 18px;border-radius:10px;font-weight:600;transition:.3s}
+    .btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff}
+    .btn-primary:hover{opacity:.85}
+    .btn-outline{border:1px solid var(--muted);color:var(--muted)}
+    .btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+
+    section{margin:60px 0}
+    h2{font-size:28px;margin-bottom:20px}
+    .about p{max-width:700px;color:#e5e7eb}
+
+    .skills{display:flex;flex-wrap:wrap;gap:16px}
+    .skills i{font-size:40px;color:var(--accent2)}
+
+    .projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+    .project{background:var(--card);padding:20px;border-radius:14px;transition:.3s;box-shadow:0 6px 16px rgba(0,0,0,0.3)}
+    .project:hover{transform:translateY(-6px)}
+    .project h3{margin-bottom:8px}
+    .project p{color:var(--muted);font-size:14px}
+    .project h3 {
+  margin-bottom: 8px;
+  color: #00ff99;
+  text-shadow: 0 0 8px #00ff99, 0 0 15px #00cc88;
+}
+
+    .contact{background:var(--card);padding:20px;border-radius:14px;text-align:center}
+    .contact p{margin-bottom:12px;color:var(--muted)}
+
+    footer{text-align:center;padding:20px 0;color:var(--muted);font-size:14px;margin-top:40px}
+
+    /* Animation */
+    [data-animate]{opacity:0;transform:translateY(30px);transition:all .6s ease-out}
+    [data-animate].show{opacity:1;transform:translateY(0)}
+
+    @media(max-width:768px){
+      .hero{grid-template-columns:1fr;text-align:center}
+      .hero img{margin:auto} 
+    }
+  </style></head>
+  <canvas id="hackerCanvas"></canvas>
+<body>
+    <!-- Tombol toggle audio -->
+    <button class="toggle-audio" onclick="togglePlayer()">🎵</button>
+    
+    <!-- Audio player -->
+    <div class="music-player" id="musicPlayer">
+      <button onclick="prevSong()">⏮</button>
+      <button onclick="togglePlay()">⏯</button>
+      <button onclick="nextSong()">⏭</button>
+      <span id="nowPlaying">Memuat lagu...</span>
+    </div>
+    
+  <div class="container">
+    <header>
+      <div class="logo">RAHADI DEV</div>
+      <nav>
+        <a href="#about">Tentang</a>
+        <a href="#projects">Proyek</a>
+        <a href="#skills">Keahlian</a>
+        <a href="#contact">Kontak</a>
+   
+      </nav>
+    </header><section class="hero">
+  <div data-animate>
+    <h1>Halo, Saya <span style="color:var(--accent)">I Gede Rahadi</span></h1>
+    <p>Pengembang Web • Pembuat Bot WhatsApp • Cyber scurity • Pengembang Api Untuk Dev bot</p>
+    <a href="#projects" class="btn btn-primary">Lihat Proyek</a>
+    <a href="mailto: gederahadi88@gmail.com" class="btn btn-outline" style="margin-left:12px">Hubungi</a>
+  </div>
+  <div data-animate>
+    <img src="https://i.imgur.com/Mmsip9r.jpg" 
+     alt="Foto Profil" 
+     style="width:150px;height:150px;border-radius:50%;object-fit:cover;box-shadow:0 0 15px rgba(0,255,255,0.7);">
+  </div>
+</section>
+
+<section id="about" class="about" data-animate>
+  <h3>Tentang Saya</h3>
+  <p>Saya <strong>I Gede Rahadi</strong> dari Selat, Karangasem. Fokus pada pembuatan bot WhatsApp, web sederhana, dan otomasi menggunakan Node.js, Baileys, dan Termux. Saya suka menulis kode rapi, membuat solusi praktis, serta terus belajar teknologi baru.</p>
+</section>
+
+<section id="projects" data-animate>
+  <h2>Proyek Pilihan</h2>
+  <div class="projects">
+    <div class="project">
+      <h3>Rahadi bail</h3>
+      <p>Ini adalah Baileys ciptaan rahadi di github untuk membuat bot connection yg simpel.</p>
+      <a href="https://github.com/Projects-bot/rahadi-bail" target="_blank">Lihat Repository →</a>
+    </div>
+    <div class="project">
+      <h3>Npm module</h3>
+      <p>Ini adalah Npm module untuk fitur doa Hindu yg diciptakan untuk fitur bot WhatsApp dll.</p>
+      <a href="https://www.npmjs.com/package/doa-hindu" target="_blank"Project npm doa hindu</a>
+      <a href="https://www.npmjs.com/package/api-rbot" target="_blank"Project npm ApiRbot</a>
+            
+    </div>
+    <div class="project">
+      <h3>Utilities</h3>
+      <p>Kumpulan skrip Termux dan tools kecil untuk otomasi pekerjaan sehari-hari.</p>
+    </div>
+    <div class="project">
+      <h3>Avee Preset</h3>
+      <p>Preset Avee Player (.plp) dengan tema spektrum & meteor.</p>
+    </div>
+  </div>
+</section>
+
+<section id="skills" data-animate>
+  <h3>Keahlian</h3>
+     <div class="skills">
+      <i class="devicon-javascript-plain"></i>
+      <i class="devicon-nodejs-plain"></i>
+      <i class="devicon-html5-plain"></i>
+      <i class="devicon-css3-plain"></i>
+      <i class="devicon-linux-plain"></i>
+      <i class="devicon-github-original"></i>
+      <i class="devicon-termux-original"></i>
+      <i class="devicon-npm-original"></i>
+  </div>
+</section>
+
+<section id="contact" class="contact" data-animate>
+  <h3>Kontak</h3>
+  <p>Email: <a href="mailto: gederahadi88@gmail.com">gederahadi88@gmail.com</a></p>
+  <p>GitHub: <a href="https://github.com/Projects-bot" target="_blank">github.com/Projects-bot</a></p>
+  <a class="btn btn-primary" href="/resume.pdf">Unduh Resume</a>
+</section>
+
+<footer>
+  © <span id="year"></span> I Gede Rahadi — Dibuat dengan ❤️ HTML, CSS & JS
+</footer>
+
+  </div>  <script>
+      // Playlist lagu
+    const songs = ["music1.mp3", "music2.mp3", "music3.mp3"]; // ganti dengan nama file musikmu
+    let current = 0;
+    let isPlaying = false;
+    
+    const audio = new Audio(songs[current]);
+    const nowPlaying = document.getElementById("nowPlaying");
+    const player = document.getElementById("musicPlayer");
+    
+    function loadSong(index) {
+      audio.src = songs[index];
+      nowPlaying.textContent = "Now Playing: " + songs[index];
+      if (isPlaying) audio.play();
+    }
+    
+    function togglePlay() {
+      if (isPlaying) {
+        audio.pause();
+      } else {
+        audio.play();
+      }
+      isPlaying = !isPlaying;
+    }
+    
+    function nextSong() {
+      current = (current + 1) % songs.length;
+      loadSong(current);
+    }
+    
+    function prevSong() {
+      current = (current - 1 + songs.length) % songs.length;
+      loadSong(current);
+    }
+    
+    function togglePlayer() {
+      if (player.style.display === "flex") {
+        player.style.display = "none";
+      } else {
+        player.style.display = "flex";
+      }
+    }
+    
+    audio.addEventListener("ended", nextSong);
+    
+    // load pertama
+    loadSong(current);
+
+    // Hacker Matrix Effect
+const canvas = document.getElementById('hackerCanvas');
+const ctx = canvas.getContext('2d');
+
+canvas.height = window.innerHeight;
+canvas.width = window.innerWidth;
+
+const letters = '01ABCDEFGHIJKLMNOPQRSTUVXYZあいうえお水火土風雷';
+const lettersArr = letters.split('');
+
+const fontSize = 14;
+const columns = canvas.width / fontSize;
+const drops = Array(Math.floor(columns)).fill(1);
+
+function drawMatrix() {
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = '#00ff00';
+  ctx.font = fontSize + 'px monospace';
+
+  drops.forEach((y, i) => {
+    const text = lettersArr[Math.floor(Math.random() * lettersArr.length)];
+    const x = i * fontSize;
+    ctx.fillText(text, x, y * fontSize);
+
+    if (y * fontSize > canvas.height && Math.random() > 0.975) {
+      drops[i] = 0;
+    }
+    drops[i]++;
+  });
+}
+
+setInterval(drawMatrix, 33);
+
+window.addEventListener('resize', () => {
+  canvas.height = window.innerHeight;
+  canvas.width = window.innerWidth;
+});
+  
+    // animasi scroll
+    const elements = document.querySelectorAll('[data-animate]');
+    const onScroll = () => {
+      elements.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if(rect.top < window.innerHeight - 60){
+          el.classList.add('show');
+        }
+      });
+    };
+    window.addEventListener('scroll', onScroll);
+    window.addEventListener('load', onScroll);
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script></body>
+</html>
